@@ -44,7 +44,8 @@ const resumeSchema = new mongoose.Schema({
         default: []
     },
     image: {
-        type: String
+        type: String,
+        default: 'No image'
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,

@@ -4,51 +4,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const { OAuth2Client } = require('google-auth-library');
-const checkAuth = require('../controllers/AuthController');
+const checkAuth = require('../middlewares/checkAuth');
 
 const router = express.Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
-// router.get('/protected-route', async (req, res) => {
-//     const authHeader = req.headers['authorization'];
-//     if (!authHeader) {
-//         return res.status(401).json({ message: 'No token provided' });
-//     }
-
-//     const token = authHeader.split(' ')[1];
-
-//     if (!token) {
-//         return res.status(401).json({ message: 'No token provided' });
-//     }
-
-//     // Decode the token header to determine its type
-//     const decodedHeader = jwt.decode(token, { complete: true });
-//     if (!decodedHeader) {
-//         return res.status(400).json({ message: 'Invalid token' });
-//     }
-
-//     try {
-//         if (decodedHeader.header.alg.startsWith('RS')) {
-//             // If the token is using an asymmetric algorithm, treat it as a Google token
-//             const ticket = await client.verifyIdToken({
-//                 idToken: token,
-//                 audience: GOOGLE_CLIENT_ID,
-//             });
-
-//             const payload = ticket.getPayload();
-//             console.log(payload);
-//             return res.json({ message: 'Google token is valid', user: payload });
-//         } else {
-//             // Otherwise, treat it as a JWT
-//             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//             console.log(decoded);
-//             return res.json({ message: 'JWT token is valid', user: decoded });
-//         }
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(401).json({ message: 'Invalid token' });
-//     }
-// });
 
 
 router.get('/protected-route', checkAuth, (req, res) => {

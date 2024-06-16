@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const cors = require('cors');
 const cookieSession = require('cookie-session');
 // const passport = require('passport');
@@ -9,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
 require('./config/auth');
 const mongoose = require('./config/db');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 app.get('/', (req, res) => {
     return res.send("Welcome to Main Page");
@@ -26,10 +28,13 @@ app.use(cors({
     credentials: true,
 }));
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+//Middleware
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+//Route
 app.use('/auth', authRoutes);
+app.use('/upload', uploadRoutes)
 app.use('/resume', resumeRoutes);
 
 app.listen(process.env.PORT, () => {
