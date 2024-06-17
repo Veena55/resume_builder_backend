@@ -54,6 +54,10 @@ const resumeSchema = new mongoose.Schema({
     },
     template: {
         type: String
+    },
+    education: {
+        type: [{}],
+        default: []
     }
 });
 

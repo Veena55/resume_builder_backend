@@ -6,7 +6,6 @@ const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const createResume = async (req, res) => {
-    console.log("hi", req.body);
     try {
         const { fname, lname, email, mobile, address, portfolio, linkedin_url, github_url, bio, isExperienced, projectVal, skillVal, achievementVal, template } = req.body.data;
         const userId = await User.findOne({ email });
@@ -29,7 +28,7 @@ const getResumeDataById = async (req, res) => {
     try {
         const { temp_id } = req.params;
         const objectId = new ObjectId(temp_id);
-        const user_id = new ObjectId(req.user.id);
+        // const user_id = new ObjectId(req.user.id);
         const result = await Resume.findOne({ _id: objectId });
         if (result) {
             res.status(200).json({ result });
@@ -39,7 +38,35 @@ const getResumeDataById = async (req, res) => {
     }
 }
 
+const getResumeByUserId = async (req, res) => {
+    try {
+        const user_id = new ObjectId(req.user.sub);
+        console.log(user_id, "hi");
+        const result = await Resume.find({ userId: user_id });
+        console.log(result);
+        if (result) {
+            res.status(200).json({ result });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(401).json({ message: "Invalid Token!" })
+    }
+}
+
+const deleteResumeById = async (req, res) => {
+    try {
+        const tempId = new ObjectId(req.body.tempId);
+        const result = await Resume.deleteOne({ _id: tempId });
+        console.log(result, "uuiyiuy");
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({ message: "Can't be deleted" });
+    }
+}
+
 module.exports = {
     createResume,
-    getResumeDataById
+    getResumeDataById,
+    getResumeByUserId,
+    deleteResumeById
 }
