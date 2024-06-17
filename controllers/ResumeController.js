@@ -13,13 +13,12 @@ const createResume = async (req, res) => {
             userId, fname, lname, address, mobile, email, portfolio, linkedin: linkedin_url, github: github_url, bio, isExperienced, education: educationVal, projects: projectVal, skills: skillVal, achievements: achievementVal, template
         });
         const result = await resume.save();
-        // console.log(result);
         if (result) {
             res.status(200).json({ id: result.id, "msg": "Data Save Successfully!" });
         }
     } catch (error) {
         console.log(error);
-        return res.status(401).json("Error")
+        return res.status(401).json({ msg: "Something went wrong" });
     }
 
 }
