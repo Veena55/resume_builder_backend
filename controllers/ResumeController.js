@@ -7,10 +7,10 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const createResume = async (req, res) => {
     try {
-        const { fname, lname, email, mobile, address, portfolio, linkedin_url, github_url, bio, isExperienced, projectVal, skillVal, achievementVal, template } = req.body.data;
+        const { fname, lname, email, mobile, address, portfolio, linkedin_url, github_url, bio, isExperienced, educationVal, projectVal, skillVal, achievementVal, template } = req.body.data;
         const userId = await User.findOne({ email });
         const resume = new Resume({
-            userId, fname, lname, address, mobile, email, portfolio, linkedin: linkedin_url, github: github_url, bio, isExperienced, projects: projectVal, skills: skillVal, achievements: achievementVal, template
+            userId, fname, lname, address, mobile, email, portfolio, linkedin: linkedin_url, github: github_url, bio, isExperienced, education: educationVal, projects: projectVal, skills: skillVal, achievements: achievementVal, template
         });
         const result = await resume.save();
         // console.log(result);
